@@ -119,6 +119,7 @@ const WorkSection = () => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       // Only activate when section is in viewport (top at or above viewport, has height)
+      // Fixed: use rect.top <= 10 && rect.height > 0 instead of strict viewport-height check
       const inViewport = rect.top <= 10 && rect.height > 0;
       if (!inViewport) return;
 

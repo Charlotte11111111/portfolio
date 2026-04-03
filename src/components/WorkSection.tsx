@@ -85,7 +85,7 @@ const WorkSection = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const wheelAccumRef = useRef(0);
-  const wheelLockRef = useRef(false);
+  const lastWheelTimeRef = useRef(0);
 
   const scrollToIndex = useCallback((index: number) => {
     if (!containerRef.current) return;
@@ -118,25 +118,32 @@ const WorkSection = () => {
     const onWheel = (e: WheelEvent) => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
-      // Only activate when section is in viewport (top at or above viewport, has height)
-      // Fixed: use rect.top <= 10 && rect.height > 0 instead of strict viewport-height check
       const inViewport = rect.top <= 10 && rect.height > 0;
       if (!inViewport) return;
 
+      // Accumulate delta (supports both mouse wheel and trackpad)
       wheelAccumRef.current += e.deltaY;
-      const direction = wheelAccumRef.current > 0 ? 1 : -1;
-      const nextIndex = activeIndex + direction;
-      if (nextIndex < 0 || nextIndex >= experiences.length) { wheelAccumRef.current = 0; return; }
-      if (wheelLockRef.current) { e.preventDefault(); return; }
-      const threshold = 30;
-      if (Math.abs(wheelAccumRef.current) < threshold) { e.preventDefault(); return; }
-      wheelAccumRef.current = 0;
-      wheelLockRef.current = true;
-      scrollToIndex(nextIndex);
-      window.setTimeout(() => { wheelLockRef.current = false; }, 300);
-      e.preventDefault();
+      const absAccum = Math.abs(wheelAccumRef.current);
+
+      // ── If threshold met, snap to next card ──
+      const threshold = 20; // lower = more sensitive
+      if (absAccum >= threshold) {
+        const now = Date.now();
+        // Debounce: ignore if we snapped in the last 600ms (prevents double-fire)
+        if (now - lastWheelTimeRef.current < 600) return;
+        lastWheelTimeRef.current = now;
+
+        const direction = wheelAccumRef.current > 0 ? 1 : -1;
+        const nextIndex = activeIndex + direction;
+        wheelAccumRef.current = 0;
+
+        if (nextIndex < 0 || nextIndex >= experiences.length) return;
+        scrollToIndex(nextIndex);
+        // No preventDefault() — let native scroll + snap animation coexist
+      }
     };
-    window.addEventListener('wheel', onWheel, { passive: false });
+
+    window.addEventListener('wheel', onWheel, { passive: true });
     return () => window.removeEventListener('wheel', onWheel);
   }, [activeIndex, scrollToIndex]);
 

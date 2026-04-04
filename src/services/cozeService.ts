@@ -1,6 +1,7 @@
 const COZE_API_TOKEN = import.meta.env.VITE_COZE_API_TOKEN;
 const BOT_ID = import.meta.env.VITE_COZE_BOT_ID || '7613987519474303016';
-const API_BASE_URL = '/coze-api';
+// 本地开发使用代理，生产环境直接调用 API
+const API_BASE_URL = import.meta.env.VITE_COZE_API_BASE_URL || 'https://api.coze.cn';
 
 interface CozeMessage {
   role: 'user' | 'assistant';

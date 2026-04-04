@@ -174,7 +174,16 @@ export default function ChatPopover({
               <div className="text-xs text-muted-foreground">Coze Agent</div>
             </div>
           </div>
-          <Button variant="ghost" size="icon" onClick={() => setOpen(false)} aria-label="关闭">
+          <Button
+            variant="ghost"
+            size="icon"
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen(false);
+            }}
+            aria-label="关闭"
+          >
             <X className="w-4 h-4" />
           </Button>
         </div>

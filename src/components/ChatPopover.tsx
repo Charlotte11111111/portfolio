@@ -174,15 +174,6 @@ export default function ChatPopover({
               <div className="text-xs text-muted-foreground">Coze Agent</div>
             </div>
           </div>
-          <button
-            type="button"
-            onPointerDown={(e) => e.stopPropagation()}
-            onClick={() => setOpen(false)}
-            className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-            aria-label="关闭"
-          >
-            <X className="w-4 h-4" />
-          </button>
         </div>
 
         <ScrollArea className="h-[360px] px-4 py-4">

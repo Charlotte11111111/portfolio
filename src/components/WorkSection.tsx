@@ -1,9 +1,34 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import expFadada from '@/assets/exp-fadada.jpg';
 import expBgi from '@/assets/exp-bgi.jpg';
-import expGf from '@/assets/exp-gf.jpg';
+import expVesync from '@/assets/exp-vesync.jpg';
 
 const experiences = [
+  {
+    company: 'VeSync（晨北科技）',
+    role: '软件产品经理',
+    period: '2026.03 – 至今',
+    image: expVesync,
+    summary:
+      'VeSync 旗下拥有 Levoit、ETEKCITY 等多个成熟出海消费电子品牌，产品矩阵覆盖智能家居、健康硬件等品类。本人参与智能戒指新品项目（公司智能穿戴品类从0到1阶段），负责 H5 网页与 App 端产品工作，推进 AI 指维识别核心功能从立项到上线落地。',
+    highlights: [
+      {
+        title: 'AI 指维识别功能的全流程产品化',
+        detail:
+          '智能指环负责 H5 网页 AI 指维识别功能，从功能前期的 ROI 计算、成本效益评估出发，完成 PRD 撰写与交互原型设计，协调研发与算法团队进行功能测试验证，与法务部门确认合规性，梳理完整的用户路径与功能展示渠道，推进功能上线落地。',
+      },
+      {
+        title: 'App 包活策略优化与留存管理',
+        detail:
+          '通过系统分析竞品弹窗逻辑与包活设计，为产品 App 包活提供差异化方案，设计基于 GPS 定位的定时回传与主动管理机制，建立健康提示的触发逻辑与引导体系，提升用户活跃度与 App 留存率。',
+      },
+      {
+        title: '用户指导文档体系建设',
+        detail:
+          '主导 QSG、产品说明书与 FAQ 文档的策划与绘制，组织产品、法务、质量等跨部门团队收集与整合常见问题解答，确保文档内容的准确性与易用性，降低用户上手成本，同时保证内容合规性。',
+      },
+    ],
+  },
   {
     company: '法大大',
     role: '软件产品经理',
@@ -55,25 +80,6 @@ const experiences = [
       {
         title: 'KPI 数据看板搭建',
         detail: '搭建 2 套项目进度与 KPI 仪表盘，统一指标口径（成果发表进度与立项节点偏差、结项延期对应的经费、各分院回款率完成情况等）。',
-      },
-    ],
-  },
-  {
-    company: '广发证券股份有限公司',
-    role: '客户行为数据分析',
-    period: '2023.07 – 2023.08',
-    image: expGf,
-    summary: '基于 CRM 与交易系统中的客户资产、风险偏好与交易行为数据，结合市场与标的基本面信息，开展客户行为分析与投顾支持分析。',
-    highlights: [
-      {
-        title: '基本面分析与投顾支持',
-        detail:
-          '参与行业与个股基本面资料整理与数据跟踪，结合宏观与行业阶段性变化，协助分析重点标的的核心指标表现（如估值区间、业绩变化，行业景气度），并将分析结果整理为投顾参考材料，支持资产配置建议与策略解读。',
-      },
-      {
-        title: '客户分层与行为分析',
-        detail:
-          '基于 CRM 中既有的客户画像与风险等级体系，重点分析客户在不同市场环境下的资产调整与交易行为差异，如换仓频率、仓位变化与产品偏好转移，识别需重点关注或主动沟通的客户群体，为投顾跟进节奏与沟通策略提供支持。',
       },
     ],
   },

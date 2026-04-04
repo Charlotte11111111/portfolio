@@ -161,6 +161,13 @@ export default function ChatPopover({
         side="right"
         align="center"
         sideOffset={14}
+        onEscapeKeyDown={(e) => {
+          e.preventDefault();
+          setOpen(false);
+        }}
+        onInteractOutside={(e) => {
+          e.preventDefault();
+        }}
         className="w-[420px] p-0 overflow-hidden rounded-3xl border border-border bg-background/80 backdrop-blur shadow-[0_28px_90px_-55px_rgba(0,0,0,0.55)]"
       >
         <div className="relative flex items-center justify-between px-4 py-3 border-b border-border/70">

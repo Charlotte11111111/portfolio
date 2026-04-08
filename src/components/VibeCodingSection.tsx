@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, lazy, Suspense } from 'react';
-import { ArrowUpRight, Bot, Sparkles, Github, ExternalLink, ChevronRight } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Github, ExternalLink, ChevronRight } from 'lucide-react';
 
 const ParticleButterflyEffect = lazy(() => import('./ParticleButterflyEffect'));
 
@@ -103,7 +103,7 @@ const VibeCodingSection = () => {
             visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-10">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 backdrop-blur px-4 py-2 dark:bg-white/[0.04] dark:border-white/[0.08]">
                 <span className="w-8 h-8 rounded-full bg-[#22C55E]/15 text-[#22C55E] dark:bg-[#22C55E]/20 dark:text-[#22C55E] flex items-center justify-center">
@@ -112,16 +112,18 @@ const VibeCodingSection = () => {
                 <span className="text-sm tracking-widest text-muted-foreground">VIBE CODING</span>
               </div>
               <h2
-                className="font-display text-3xl sm:text-4xl md:text-5xl text-foreground font-semibold mt-5"
-                style={{ lineHeight: 1.15 }}
+                className="font-display text-3xl sm:text-5xl md:text-6xl text-foreground font-semibold mt-6"
+                style={{ lineHeight: 1.12 }}
               >
                 把想法变成可用原型
+                <span className="text-muted-foreground">更快</span>
+                <span className="text-muted-foreground">更准</span>
               </h2>
             </div>
-            <div className="max-w-md">
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                大模型作为"并行协作者"，完成需求拆解、Prompt 设计、快速原型与迭代验证。
-                用更短时间，把更靠谱的产品交付出来。
+            <div className="max-w-xl">
+              <p className="text-muted-foreground text-base leading-relaxed">
+                我把大模型当成"并行协作者"：在同一条主线上完成需求拆解、Prompt 设计、快速原型与迭代验证。
+                目标不是炫技，而是用更短时间把更靠谱的产品交付出来。
               </p>
             </div>
           </div>
@@ -148,23 +150,11 @@ const VibeCodingSection = () => {
               <div className="relative">
                 {/* Header */}
                 <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-[#22C55E] font-medium tracking-wide">FEATURED</span>
-                    </div>
-                    <h3 className="font-display text-xl sm:text-2xl text-foreground font-semibold mt-2 group-hover:text-[#22C55E] transition-colors">
+                  <div>
+                    <div className="text-xs text-muted-foreground tracking-widest">VIBE PROJECT</div>
+                    <h3 className="font-display text-2xl text-foreground font-semibold mt-2 group-hover:text-[#22C55E] transition-colors">
                       {project.title}
                     </h3>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {project.demo && (
-                      <span className="w-9 h-9 rounded-full border border-border dark:border-white/10 flex items-center justify-center text-muted-foreground group-hover:text-[#22C55E] group-hover:border-[#22C55E]/30 transition-all">
-                        <ExternalLink className="w-4 h-4" />
-                      </span>
-                    )}
-                    <span className="w-9 h-9 rounded-full border border-border dark:border-white/10 flex items-center justify-center text-muted-foreground group-hover:text-[#22C55E] group-hover:border-[#22C55E]/30 transition-all">
-                      <Github className="w-4 h-4" />
-                    </span>
                   </div>
                 </div>
 
@@ -185,106 +175,100 @@ const VibeCodingSection = () => {
                   ))}
                 </div>
 
-                {/* Arrow indicator */}
-                <div className="flex items-center gap-1.5 mt-4 text-xs text-muted-foreground group-hover:text-[#22C55E] transition-colors">
-                  <span>查看详情</span>
-                  <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                {/* Links */}
+                <div className="flex items-center gap-3 mt-6">
+                  {project.demo && (
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 dark:bg-white/[0.05] dark:border-white/[0.08] px-4 py-2 text-sm text-foreground hover:bg-[#22C55E]/10 hover:border-[#22C55E]/30 transition-all duration-200"
+                    >
+                      <ArrowUpRight className="w-4 h-4" />
+                      <span>在线体验</span>
+                    </a>
+                  )}
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 dark:bg-white/[0.05] dark:border-white/[0.08] px-4 py-2 text-sm text-foreground hover:bg-[#22C55E]/10 hover:border-[#22C55E]/30 transition-all duration-200"
+                  >
+                    <Github className="w-4 h-4" />
+                    <span>GitHub</span>
+                  </a>
                 </div>
               </div>
             </a>
           ))}
         </div>
 
-        {/* ── Workflow + Other Projects ── */}
+        {/* ── Other Projects ── */}
         <div
-          className={`grid grid-cols-1 lg:grid-cols-12 gap-5 transition-all duration-700 delay-300 ${
+          className={`grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 transition-all duration-700 delay-300 ${
             visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          {/* Workflow Card */}
-          <div className="lg:col-span-3 order-2 lg:order-1">
-            <div className="relative rounded-2xl border border-border/60 bg-background/40 dark:bg-white/[0.03] dark:border-white/[0.08] p-5 h-full">
-              <div className="flex items-center gap-2.5 mb-4">
-                <span className="w-9 h-9 rounded-lg bg-[#22C55E]/15 text-[#22C55E] dark:bg-[#22C55E]/20 dark:text-[#4ADE80] flex items-center justify-center">
-                  <Bot className="w-4 h-4" />
-                </span>
-                <span className="text-sm font-medium">开发流程</span>
-              </div>
-              
-              <div className="space-y-2.5">
-                {[
-                  { step: '01', text: '需求拆解' },
-                  { step: '02', text: 'Prompt 设计' },
-                  { step: '03', text: '快速原型' },
-                  { step: '04', text: '迭代验证' },
-                ].map((item) => (
-                  <div
-                    key={item.step}
-                    className="flex items-center gap-3 text-sm"
-                  >
-                    <span className="w-6 h-6 rounded-md bg-[#22C55E]/10 text-[#22C55E] text-xs font-medium flex items-center justify-center shrink-0">
-                      {item.step}
-                    </span>
-                    <span className="text-muted-foreground">{item.text}</span>
-                  </div>
-                ))}
-              </div>
+          {otherProjects.map((project, idx) => (
+            <a
+              key={project.title}
+              href={project.demo || project.github}
+              target="_blank"
+              rel="noreferrer"
+              className="group relative rounded-xl border border-border/40 bg-background/30 dark:bg-white/[0.02] dark:border-white/[0.06] p-4 overflow-hidden transition-all duration-300 hover:border-[#22C55E]/30 hover:shadow-[0_8px_24px_-12px_rgba(34,197,94,0.3)] hover:-translate-y-0.5"
+              style={{ transitionDelay: `${idx * 40}ms` }}
+            >
+              {/* Subtle glow */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-[#22C55E]/[0.03] to-transparent" />
 
-              <div className="mt-4 pt-4 border-t border-border/40">
-                <p className="text-xs text-muted-foreground">
-                  适用：原型验证 · 产品 Demo · 数据可视化
+              <div className="relative">
+                <div className="flex items-start justify-between gap-2">
+                  <h3 className="font-medium text-foreground group-hover:text-[#22C55E] transition-colors line-clamp-1">
+                    {project.title}
+                  </h3>
+                </div>
+
+                <p className="text-xs text-muted-foreground leading-relaxed mt-2 line-clamp-2">
+                  {project.description}
                 </p>
-              </div>
-            </div>
-          </div>
 
-          {/* Other Projects (3-column grid) */}
-          <div className="lg:col-span-9 order-1 lg:order-2">
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-              {otherProjects.map((project, idx) => (
-                <a
-                  key={project.title}
-                  href={project.demo || project.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group relative rounded-xl border border-border/40 bg-background/30 dark:bg-white/[0.02] dark:border-white/[0.06] p-4 overflow-hidden transition-all duration-300 hover:border-[#22C55E]/30 hover:shadow-[0_8px_24px_-12px_rgba(34,197,94,0.3)] hover:-translate-y-0.5"
-                  style={{ transitionDelay: `${idx * 40}ms` }}
-                >
-                  {/* Subtle glow */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-[#22C55E]/[0.03] to-transparent" />
-                  
-                  <div className="relative">
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-medium text-foreground group-hover:text-[#22C55E] transition-colors line-clamp-1">
-                        {project.title}
-                      </h3>
-                      <Github className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
-                    </div>
+                <div className="flex flex-wrap gap-1.5 mt-3">
+                  {project.tags.slice(0, 2).map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-border/60 bg-background/50 dark:bg-white/[0.03] px-2 py-0.5 text-[10px] text-muted-foreground"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
 
-                    <p className="text-xs text-muted-foreground leading-relaxed mt-2 line-clamp-2">
-                      {project.description}
-                    </p>
-
-                    <div className="flex flex-wrap gap-1.5 mt-3">
-                      {project.tags.slice(0, 2).map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full border border-border/60 bg-background/50 dark:bg-white/[0.03] px-2 py-0.5 text-[10px] text-muted-foreground"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center gap-1.5 mt-3 text-[10px] text-muted-foreground group-hover:text-[#22C55E] transition-colors">
-                      <span>访问</span>
+                {/* Links */}
+                <div className="flex items-center gap-2 mt-3">
+                  {project.demo && (
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/50 dark:bg-white/[0.03] px-2.5 py-1 text-[10px] text-muted-foreground hover:bg-[#22C55E]/10 hover:border-[#22C55E]/30 hover:text-[#22C55E] transition-all duration-200"
+                    >
                       <ArrowUpRight className="w-3 h-3" />
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
+                      <span>在线体验</span>
+                    </a>
+                  )}
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/50 dark:bg-white/[0.03] px-2.5 py-1 text-[10px] text-muted-foreground hover:bg-[#22C55E]/10 hover:border-[#22C55E]/30 hover:text-[#22C55E] transition-all duration-200"
+                  >
+                    <Github className="w-3 h-3" />
+                    <span>GitHub</span>
+                  </a>
+                </div>
+              </div>
+            </a>
+          ))}
         </div>
 
         {/* ── View All Link ── */}

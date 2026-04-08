@@ -25,6 +25,12 @@ const vibeProjects = [
     github: 'https://github.com/shiyiqing111/Food-Map/tree/main',
     demo: 'https://food-map-beta-nine.vercel.app/',
   },
+  {
+    title: 'AI Resume Autofill',
+    description: 'Chrome 扩展插件，AI 智能识别并自动填写网页表单字段，适配主流招聘平台。',
+    tags: ['Chrome Extension', 'AI', '自动化'],
+    github: 'https://github.com/Charlotte11111111/Resume-autofill',
+  },
 ];
 
 const VibeCodingSection = () => {
@@ -187,15 +193,17 @@ const VibeCodingSection = () => {
 
                   {/* Links */}
                   <div className="flex items-center gap-3 mt-6">
-                    <a
-                      href={p.demo}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 dark:bg-white/[0.05] dark:border-white/[0.08] px-4 py-2 text-sm text-foreground hover:bg-[#22C55E]/10 hover:border-[#22C55E]/30 transition-all duration-200"
-                    >
-                      <ArrowUpRight className="w-4 h-4" />
-                      <span>在线体验</span>
-                    </a>
+                    {p.demo && (
+                      <a
+                        href={p.demo}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 dark:bg-white/[0.05] dark:border-white/[0.08] px-4 py-2 text-sm text-foreground hover:bg-[#22C55E]/10 hover:border-[#22C55E]/30 transition-all duration-200"
+                      >
+                        <ArrowUpRight className="w-4 h-4" />
+                        <span>在线体验</span>
+                      </a>
+                    )}
                     <a
                       href={p.github}
                       target="_blank"

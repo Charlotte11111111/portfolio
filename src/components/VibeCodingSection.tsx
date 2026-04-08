@@ -1,26 +1,29 @@
 import { useEffect, useRef, useState, lazy, Suspense } from 'react';
-import { ArrowUpRight, Bot, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Bot, Sparkles, Github } from 'lucide-react';
 
 const ParticleButterflyEffect = lazy(() => import('./ParticleButterflyEffect'));
 
 const vibeProjects = [
   {
-    title: 'Prompt Assistant',
+    title: 'Vibe Prompt Assistant',
     description: '结构化 Prompt 设计实验，将模糊需求转化为高质量 AI 输出。',
-    tags: ['React', 'AI API'],
-    link: 'https://traevibe-prompt-assistant0ied.vercel.app/',
+    tags: ['React', 'AI API', '语音识别'],
+    github: 'https://github.com/shiyiqing111/Vibe-prompt-assistant',
+    demo: 'https://traevibe-prompt-assistant0ied.vercel.app/',
   },
   {
-    title: 'Mock Interviewer',
+    title: 'MockAI',
     description: '深度解析岗位要求，定制化生成模拟面试题与策略，帮助复盘。',
-    tags: ['AI', 'Interview'],
-    link: 'https://traes7131vdn.vercel.app/',
+    tags: ['React', 'AI', '面试助手'],
+    github: 'https://github.com/shiyiqing111/MockAI',
+    demo: 'https://traes7131vdn.vercel.app/',
   },
   {
     title: 'Food Map',
     description: '探索城市美食地图，基于地理位置与口味偏好推荐附近餐厅与地道小吃。',
-    tags: ['AI', '地图', '推荐'],
-    link: 'https://food-map-beta-nine.vercel.app/',
+    tags: ['AI', '地图', '推荐系统'],
+    github: 'https://github.com/shiyiqing111/Food-Map/tree/main',
+    demo: 'https://food-map-beta-nine.vercel.app/',
   },
 ];
 
@@ -149,11 +152,8 @@ const VibeCodingSection = () => {
           {/* Project Cards */}
           <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6">
             {vibeProjects.map((p, idx) => (
-              <a
+              <div
                 key={p.title}
-                href={p.link}
-                target="_blank"
-                rel="noreferrer"
                 className={`group relative rounded-3xl border border-border/50 bg-background/20 dark:bg-white/[0.02] dark:border-white/[0.06] backdrop-blur-sm p-8 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_60px_-32px_rgba(34,197,94,0.65)] dark:hover:shadow-[0_22px_60px_-32px_rgba(34,197,94,0.3)]`}
               >
                 {/* Day: warm | Night: subtle dark green */}
@@ -168,9 +168,6 @@ const VibeCodingSection = () => {
                         {p.title}
                       </h3>
                     </div>
-                    <span className="w-10 h-10 rounded-full border border-border dark:border-white/[0.1] dark:text-white/50 flex items-center justify-center text-muted-foreground transition-colors group-hover:text-foreground group-hover:border-foreground/20 dark:group-hover:text-white dark:group-hover:border-white/20">
-                      <ArrowUpRight className="w-4 h-4" />
-                    </span>
                   </div>
 
                   <p className="text-sm text-muted-foreground leading-relaxed mt-4">
@@ -187,8 +184,30 @@ const VibeCodingSection = () => {
                       </span>
                     ))}
                   </div>
+
+                  {/* Links */}
+                  <div className="flex items-center gap-3 mt-6">
+                    <a
+                      href={p.demo}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 dark:bg-white/[0.05] dark:border-white/[0.08] px-4 py-2 text-sm text-foreground hover:bg-[#22C55E]/10 hover:border-[#22C55E]/30 transition-all duration-200"
+                    >
+                      <ArrowUpRight className="w-4 h-4" />
+                      <span>在线体验</span>
+                    </a>
+                    <a
+                      href={p.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 dark:bg-white/[0.05] dark:border-white/[0.08] px-4 py-2 text-sm text-foreground hover:bg-[#22C55E]/10 hover:border-[#22C55E]/30 transition-all duration-200"
+                    >
+                      <Github className="w-4 h-4" />
+                      <span>GitHub</span>
+                    </a>
+                  </div>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         </div>

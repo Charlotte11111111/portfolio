@@ -31,6 +31,12 @@ const vibeProjects = [
     tags: ['Chrome Extension', 'AI', '自动化'],
     github: 'https://github.com/Charlotte11111111/Resume-autofill',
   },
+  {
+    title: 'Linguist Translator',
+    description: '智能翻译浏览器扩展，支持整页翻译、划词翻译、词库收藏与闪卡复习。',
+    tags: ['Chrome Extension', '翻译', '学习工具'],
+    github: 'https://github.com/Charlotte11111111/Translation-plugin',
+  },
 ];
 
 const VibeCodingSection = () => {

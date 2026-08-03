@@ -13,6 +13,14 @@ const vibeProjects = [
     featured: true,
   },
   {
+    title: 'Product Skills Studio',
+    description: 'AI 原生产品工作台：6 个可复用 Skills 由 5 个 LangGraph Agent 编排，覆盖脑暴、PRD、评审与数据分析。',
+    tags: ['Next.js', 'LangGraph', 'Skills'],
+    github: 'https://github.com/Charlotte11111111/product-skills-studio',
+    demo: 'https://product-skills-studio.vercel.app/',
+    featured: true,
+  },
+  {
     title: 'Vibe Prompt Assistant',
     description: '结构化 Prompt 设计实验，将模糊需求转化为高质量 AI 输出。',
     tags: ['React', 'AI API', '语音识别'],
@@ -27,14 +35,6 @@ const vibeProjects = [
     github: 'https://github.com/shiyiqing111/MockAI',
     demo: 'https://traes7131vdn.vercel.app/',
     featured: true,
-  },
-  {
-    title: 'Food Map',
-    description: '探索城市美食地图，基于地理位置与口味偏好推荐附近餐厅与地道小吃。',
-    tags: ['AI', '地图', '推荐系统'],
-    github: 'https://github.com/shiyiqing111/Food-Map/tree/main',
-    demo: 'https://food-map-beta-nine.vercel.app/',
-    featured: false,
   },
   {
     title: 'AI Resume Autofill',

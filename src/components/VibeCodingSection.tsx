@@ -5,6 +5,14 @@ const ParticleButterflyEffect = lazy(() => import('./ParticleButterflyEffect'));
 
 const vibeProjects = [
   {
+    title: 'Knowledge Assistant',
+    description: 'AI 知识库助手：基于 Skills 与多 Agent 协作，完成知识沉淀、问答与产品工作流编排。',
+    tags: ['Next.js', 'LangGraph', 'AI Agent'],
+    github: 'https://github.com/Charlotte11111111/portfolio',
+    demo: 'https://knowledge-assistant-kappa.vercel.app/inbox',
+    featured: true,
+  },
+  {
     title: 'Vibe Prompt Assistant',
     description: '结构化 Prompt 设计实验，将模糊需求转化为高质量 AI 输出。',
     tags: ['React', 'AI API', '语音识别'],

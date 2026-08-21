@@ -1,4 +1,4 @@
-import { RESUME_CONTEXT } from '../src/data/resumeContext';
+import { RESUME_CONTEXT } from '../src/data/resumeContext.js';
 
 export type ChatTurn = {
   role: 'user' | 'assistant';

@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { callLlmChat, resolveLlmEnv, type ChatTurn } from '../server/llmChat';
+import { callLlmChat, resolveLlmEnv, type ChatTurn } from '../server/llmChat.js';
 
 type ChatBody = {
   input?: string;

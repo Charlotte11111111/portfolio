@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState, lazy, Suspense } from 'react';
-import { ArrowUpRight, Sparkles, Github, ChevronRight } from 'lucide-react';
+import {
+  ArrowUpRight,
+  ChevronRight,
+  Github,
+  Sparkles,
+} from 'lucide-react';
 
 const ParticleButterflyEffect = lazy(() => import('./ParticleButterflyEffect'));
 
@@ -10,6 +15,8 @@ type VibeProject = {
   github?: string;
   demo?: string;
   featured: boolean;
+  visual: 'knowledge' | 'studio' | 'prompt' | 'interview' | 'ring' | 'resume' | 'translate';
+  screenshots: string[];
 };
 
 const vibeProjects: VibeProject[] = [
@@ -20,6 +27,12 @@ const vibeProjects: VibeProject[] = [
     github: 'https://github.com/Charlotte11111111/portfolio',
     demo: 'https://knowledge-assistant-kappa.vercel.app/inbox',
     featured: true,
+    visual: 'knowledge',
+    screenshots: [
+      new URL('../../image/knowlege-assistant/20260821-172904.jpg', import.meta.url).href,
+      new URL('../../image/knowlege-assistant/20260821-173025.jpg', import.meta.url).href,
+      new URL('../../image/knowlege-assistant/20260821-173030.jpg', import.meta.url).href,
+    ],
   },
   {
     title: 'Product Skills Studio',
@@ -28,6 +41,12 @@ const vibeProjects: VibeProject[] = [
     github: 'https://github.com/Charlotte11111111/product-skills-studio',
     demo: 'https://product-skills-studio.vercel.app/',
     featured: true,
+    visual: 'studio',
+    screenshots: [
+      new URL('../../image/Product Skills Studio/20260821-173235.568-1.jpg', import.meta.url).href,
+      new URL('../../image/Product Skills Studio/20260821-173235.568-2.jpg', import.meta.url).href,
+      new URL('../../image/Product Skills Studio/20260821-173235.568-3.jpg', import.meta.url).href,
+    ],
   },
   {
     title: 'Vibe Prompt Assistant',
@@ -36,6 +55,12 @@ const vibeProjects: VibeProject[] = [
     github: 'https://github.com/shiyiqing111/Vibe-prompt-assistant',
     demo: 'https://vibe-prompt-assistant.vercel.app/',
     featured: true,
+    visual: 'prompt',
+    screenshots: [
+      new URL('../../image/Vibe Prompt/20260821-173842.png', import.meta.url).href,
+      new URL('../../image/Vibe Prompt/20260821-173851.jpg', import.meta.url).href,
+      new URL('../../image/Vibe Prompt/20260821-173858.jpg', import.meta.url).href,
+    ],
   },
   {
     title: 'MockAI',
@@ -44,14 +69,26 @@ const vibeProjects: VibeProject[] = [
     github: 'https://github.com/shiyiqing111/MockAI',
     demo: 'https://mock-ai-xi.vercel.app/',
     featured: true,
+    visual: 'interview',
+    screenshots: [
+      new URL('../../image/MockAI/20260821-173802.jpg', import.meta.url).href,
+      new URL('../../image/MockAI/20260821-173808.jpg', import.meta.url).href,
+      new URL('../../image/MockAI/20260821-173818.jpg', import.meta.url).href,
+    ],
   },
   {
     title: 'Energy Ring',
     description:
-      'Web prototype for the Energy Ring: AR try-on, camera-based finger measurement, and screen sizer. Live: https://srv1560692.hstgr.cloud · http://187.127.102.10:8802',
-    tags: ['AR Try-on', 'Camera', 'Web Prototype'],
+      '面向智能戒指选购场景打造的 Web 交互原型，整合 AR 虚拟试戴、摄像头指围测量与屏幕尺寸校准，帮助用户在线完成戒指外观预览与尺寸选择。',
+    tags: ['AR 虚拟试戴', '摄像头测量', 'Web 原型'],
     demo: 'https://srv1560692.hstgr.cloud',
     featured: true,
+    visual: 'ring',
+    screenshots: [
+      new URL('../../image/Energy Ring/20260821-174153.jpg', import.meta.url).href,
+      new URL('../../image/Energy Ring/20260821-174234.jpg', import.meta.url).href,
+      new URL('../../image/Energy Ring/20260821-174242.jpg', import.meta.url).href,
+    ],
   },
   {
     title: 'AI Resume Autofill',
@@ -59,6 +96,10 @@ const vibeProjects: VibeProject[] = [
     tags: ['Chrome Extension', 'AI', '自动化'],
     github: 'https://github.com/Charlotte11111111/Resume-autofill',
     featured: false,
+    visual: 'resume',
+    screenshots: [
+      new URL('../../image/AI Resume Autofill/img_v3_0214p_9d5ca95e-f478-44cc-9eec-f9ceba45111g.jpg', import.meta.url).href,
+    ],
   },
   {
     title: 'Linguist Translator',
@@ -66,8 +107,49 @@ const vibeProjects: VibeProject[] = [
     tags: ['Chrome Extension', '翻译', '学习工具'],
     github: 'https://github.com/Charlotte11111111/Translation-plugin',
     featured: false,
+    visual: 'translate',
+    screenshots: [
+      new URL('../../image/Linguist Translator/img_v3_0214p_472a3ed2-7390-412b-b746-db9cf3cf019g.jpg', import.meta.url).href,
+    ],
   },
 ];
+
+const ProjectVisual = ({ project }: { project: VibeProject }) => {
+  const count = project.screenshots.length;
+
+  return (
+    <div className="group/stack relative h-full min-h-[280px] overflow-hidden">
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="relative h-full w-full">
+          {project.screenshots.map((src, index) => {
+            const defaultX = (index - (count - 1) / 2) * 5;
+            const spreadX = count === 1 ? 0 : (index - (count - 1) / 2) * 25;
+            const rotation = (index - (count - 1) / 2) * 3;
+            return (
+              <div
+                key={src}
+                className="absolute left-[3%] top-1/2 h-full w-[94%] -translate-y-1/2 cursor-zoom-in overflow-hidden border-l border-border/50 bg-background shadow-[-10px_0_30px_rgba(0,0,0,0.14)] transition-all duration-500 ease-out [transform:translateX(var(--stack-x))_translateY(-50%)_rotate(var(--stack-r))] group-hover/stack:[transform:translateX(var(--spread-x))_translateY(-50%)_rotate(0deg)] hover:!z-50 hover:![transform:translateX(var(--spread-x))_translateY(-50%)_rotate(0deg)_scale(1.05)]"
+                style={{
+                  zIndex: index + 1,
+                  '--stack-x': `${defaultX}%`,
+                  '--spread-x': `${spreadX}%`,
+                  '--stack-r': `${rotation}deg`,
+                } as React.CSSProperties}
+              >
+                <img
+                  src={src}
+                  alt={`${project.title} 项目截图 ${index + 1}`}
+                  className="h-full w-full object-cover object-top"
+                  loading="lazy"
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const VibeCodingSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -87,9 +169,6 @@ const VibeCodingSection = () => {
     observer.observe(node);
     return () => observer.disconnect();
   }, []);
-
-  const featuredProjects = vibeProjects.filter((p) => p.featured);
-  const otherProjects = vibeProjects.filter((p) => !p.featured);
 
   return (
     <section ref={sectionRef} className="relative py-24 sm:py-28 px-6 overflow-hidden">
@@ -154,155 +233,60 @@ const VibeCodingSection = () => {
           </div>
         </div>
 
-        {/* ── Featured Projects (2-column) ── */}
+        {/* ── Project list ── */}
         <div
-          className={`grid grid-cols-1 md:grid-cols-2 gap-5 mb-6 transition-all duration-700 delay-150 ${
+          className={`space-y-6 transition-all duration-700 delay-150 ${
             visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          {featuredProjects.map((project, idx) => (
-            <a
+          {vibeProjects.map((project, idx) => (
+            <article
               key={project.title}
-              href={project.demo || project.github}
-              target="_blank"
-              rel="noreferrer"
-              className="group relative rounded-2xl border border-border/60 bg-background/40 dark:bg-white/[0.03] dark:border-white/[0.08] p-6 overflow-hidden transition-all duration-300 hover:border-[#22C55E]/40 hover:shadow-[0_12px_40px_-20px_rgba(34,197,94,0.4)] hover:-translate-y-0.5"
+              className="group relative overflow-hidden rounded-[28px] border border-border/70 bg-background/65 shadow-[0_18px_60px_-48px_rgba(0,0,0,0.45)] backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-[#22C55E]/35 hover:shadow-[0_28px_70px_-46px_rgba(34,197,94,0.38)] dark:bg-white/[0.025] dark:border-white/[0.08]"
               style={{ transitionDelay: `${idx * 50}ms` }}
             >
-              {/* Glow effect */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-[#22C55E]/5 to-transparent" />
-              
-              <div className="relative">
-                {/* Header */}
-                <div className="flex items-start justify-between gap-4">
+              <div className="grid min-h-[280px] grid-cols-1 md:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
+                <div className="flex flex-col justify-between px-5 py-6 sm:px-8 sm:py-8">
                   <div>
-                    <div className="text-xs text-muted-foreground tracking-widest">VIBE PROJECT</div>
-                    <h3 className="font-display text-2xl text-foreground font-semibold mt-2 group-hover:text-[#22C55E] transition-colors">
+                    <div className="flex items-center gap-3 text-[11px] tracking-[0.24em] text-muted-foreground">
+                      <span>{String(idx + 1).padStart(2, '0')}</span>
+                      <span className="h-px w-8 bg-border" />
+                      <span>{project.featured ? 'FEATURED PROJECT' : 'VIBE PROJECT'}</span>
+                    </div>
+                    <h3 className="mt-5 font-display text-3xl font-semibold text-foreground transition-colors group-hover:text-[#22C55E] sm:text-4xl">
                       {project.title}
                     </h3>
+                    <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
+                      {project.description}
+                    </p>
+                    <div className="mt-6 flex flex-wrap gap-2">
+                      {project.tags.map((tag) => (
+                        <span key={tag} className="rounded-full border border-border bg-background/70 px-3 py-1.5 text-xs text-muted-foreground dark:bg-white/[0.04]">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="mt-8 flex flex-wrap items-center gap-3">
+                    {project.demo && (
+                      <a href={project.demo} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm text-background transition-transform hover:scale-[1.03]">
+                        <ArrowUpRight className="h-4 w-4" />
+                        在线体验
+                      </a>
+                    )}
+                    {project.github && (
+                      <a href={project.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-5 py-2.5 text-sm text-foreground transition-colors hover:border-[#22C55E]/35 hover:bg-[#22C55E]/10">
+                        <Github className="h-4 w-4" />
+                        GitHub
+                      </a>
+                    )}
                   </div>
                 </div>
-
-                {/* Description */}
-                <p className="text-sm text-muted-foreground leading-relaxed mt-3">
-                  {project.description}
-                </p>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-border bg-background/60 dark:bg-white/[0.05] dark:border-white/[0.08] px-3 py-1 text-xs text-muted-foreground"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Links */}
-                <div className="flex items-center gap-3 mt-6">
-                  {project.demo && (
-                    <a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 dark:bg-white/[0.05] dark:border-white/[0.08] px-4 py-2 text-sm text-foreground hover:bg-[#22C55E]/10 hover:border-[#22C55E]/30 transition-all duration-200"
-                    >
-                      <ArrowUpRight className="w-4 h-4" />
-                      <span>在线体验</span>
-                    </a>
-                  )}
-                  {project.github && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 dark:bg-white/[0.05] dark:border-white/[0.08] px-4 py-2 text-sm text-foreground hover:bg-[#22C55E]/10 hover:border-[#22C55E]/30 transition-all duration-200"
-                    >
-                      <Github className="w-4 h-4" />
-                      <span>GitHub</span>
-                    </a>
-                  )}
+                <div className="min-h-[280px] md:min-h-full">
+                  <ProjectVisual project={project} />
                 </div>
               </div>
-            </a>
-          ))}
-        </div>
-
-        {/* ── Other Projects ── */}
-        <div
-          className={`grid grid-cols-1 md:grid-cols-3 gap-5 transition-all duration-700 delay-300 ${
-            visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          {otherProjects.map((project, idx) => (
-            <a
-              key={project.title}
-              href={project.demo || project.github}
-              target="_blank"
-              rel="noreferrer"
-              className="group relative rounded-2xl border border-border/60 bg-background/40 dark:bg-white/[0.03] dark:border-white/[0.08] p-6 overflow-hidden transition-all duration-300 hover:border-[#22C55E]/40 hover:shadow-[0_12px_40px_-20px_rgba(34,197,94,0.4)] hover:-translate-y-0.5"
-              style={{ transitionDelay: `${idx * 50}ms` }}
-            >
-              {/* Glow effect */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-[#22C55E]/5 to-transparent" />
-
-              <div className="relative">
-                {/* Header */}
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <div className="text-xs text-muted-foreground tracking-widest">VIBE PROJECT</div>
-                    <h3 className="font-display text-xl text-foreground font-semibold mt-2 group-hover:text-[#22C55E] transition-colors">
-                      {project.title}
-                    </h3>
-                  </div>
-                </div>
-
-                {/* Description */}
-                <p className="text-sm text-muted-foreground leading-relaxed mt-3">
-                  {project.description}
-                </p>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-border bg-background/60 dark:bg-white/[0.05] dark:border-white/[0.08] px-3 py-1 text-xs text-muted-foreground"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Links */}
-                <div className="flex items-center gap-3 mt-6">
-                  {project.demo && (
-                    <a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 dark:bg-white/[0.05] dark:border-white/[0.08] px-4 py-2 text-sm text-foreground hover:bg-[#22C55E]/10 hover:border-[#22C55E]/30 transition-all duration-200"
-                    >
-                      <ArrowUpRight className="w-4 h-4" />
-                      <span>在线体验</span>
-                    </a>
-                  )}
-                  {project.github && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 dark:bg-white/[0.05] dark:border-white/[0.08] px-4 py-2 text-sm text-foreground hover:bg-[#22C55E]/10 hover:border-[#22C55E]/30 transition-all duration-200"
-                    >
-                      <Github className="w-4 h-4" />
-                      <span>GitHub</span>
-                    </a>
-                  )}
-                </div>
-              </div>
-            </a>
+            </article>
           ))}
         </div>
 

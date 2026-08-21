@@ -114,13 +114,34 @@ const vibeProjects: VibeProject[] = [
   },
 ];
 
+const visualLabelMap = {
+  knowledge: ['KNOWLEDGE', '多智能体协作'],
+  studio: ['WORKFLOW', 'Skills 编排'],
+  prompt: ['PROMPT', '需求结构化'],
+  interview: ['INTERVIEW', '模拟与复盘'],
+  ring: ['ENERGY RING', '测量 · 校准 · 试戴'],
+  resume: ['AUTOFILL', '字段智能映射'],
+  translate: ['LINGUIST', '理解每一种表达'],
+};
+
 const ProjectVisual = ({ project }: { project: VibeProject }) => {
+  const [eyebrow, label] = visualLabelMap[project.visual];
   const count = project.screenshots.length;
 
   return (
-    <div className="group/stack relative h-full min-h-[280px] overflow-hidden">
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="relative h-full w-full">
+    <div className="group/stack relative h-full min-h-[280px] overflow-hidden rounded-[22px] bg-secondary/35 text-foreground dark:bg-white/[0.035]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(34,197,94,0.10),transparent_46%)]" />
+      <div className="absolute left-4 top-4 z-40 rounded-full border border-border/70 bg-background/80 px-3 py-1.5 text-[9px] tracking-[0.24em] text-muted-foreground shadow-sm backdrop-blur-md">
+        {eyebrow}
+      </div>
+      {count > 1 && (
+        <div className="absolute right-4 top-4 z-40 rounded-full border border-border/70 bg-background/80 px-3 py-1.5 text-[10px] text-muted-foreground shadow-sm backdrop-blur-md">
+          悬浮展开 · {count} 张
+        </div>
+      )}
+
+      <div className="absolute inset-2 flex items-center justify-center pt-5">
+        <div className="relative h-[90%] w-full">
           {project.screenshots.map((src, index) => {
             const defaultX = (index - (count - 1) / 2) * 5;
             const spreadX = count === 1 ? 0 : (index - (count - 1) / 2) * 25;
@@ -128,7 +149,7 @@ const ProjectVisual = ({ project }: { project: VibeProject }) => {
             return (
               <div
                 key={src}
-                className="absolute left-[3%] top-1/2 h-full w-[94%] -translate-y-1/2 cursor-zoom-in overflow-hidden border-l border-border/50 bg-background shadow-[-10px_0_30px_rgba(0,0,0,0.14)] transition-all duration-500 ease-out [transform:translateX(var(--stack-x))_translateY(-50%)_rotate(var(--stack-r))] group-hover/stack:[transform:translateX(var(--spread-x))_translateY(-50%)_rotate(0deg)] hover:!z-50 hover:![transform:translateX(var(--spread-x))_translateY(-50%)_rotate(0deg)_scale(1.05)]"
+                className="absolute left-[6%] top-1/2 h-full w-[88%] -translate-y-1/2 cursor-zoom-in overflow-hidden rounded-xl border border-border/70 bg-background shadow-[0_15px_35px_rgba(0,0,0,0.22)] transition-all duration-500 ease-out [transform:translateX(var(--stack-x))_translateY(-50%)_rotate(var(--stack-r))] group-hover/stack:[transform:translateX(var(--spread-x))_translateY(-50%)_rotate(0deg)] hover:!z-50 hover:![transform:translateX(var(--spread-x))_translateY(-50%)_rotate(0deg)_scale(1.08)]"
                 style={{
                   zIndex: index + 1,
                   '--stack-x': `${defaultX}%`,
@@ -142,10 +163,25 @@ const ProjectVisual = ({ project }: { project: VibeProject }) => {
                   className="h-full w-full object-cover object-top"
                   loading="lazy"
                 />
+                <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-black/5" />
               </div>
             );
           })}
+          <div className="pointer-events-none absolute -bottom-3 left-1/2 h-5 w-4/5 -translate-x-1/2 rounded-full bg-black/20 blur-xl" />
         </div>
+      </div>
+
+      <div className="absolute bottom-3 left-4 z-40 flex items-center gap-2 rounded-full bg-background/80 px-3 py-1.5 text-[10px] font-medium tracking-wide text-muted-foreground shadow-sm backdrop-blur-md">
+        <span className="h-1.5 w-1.5 rounded-full bg-[#22C55E] shadow-[0_0_8px_#22C55E]" />
+        {label}
+      </div>
+      <div className="absolute bottom-5 right-5 z-40 flex gap-1">
+        {project.screenshots.map((_, index) => (
+          <span
+            key={index}
+            className={`h-1 rounded-full ${index === 0 ? 'w-5 bg-[#22C55E]' : 'w-2 bg-foreground/20'}`}
+          />
+        ))}
       </div>
     </div>
   );
@@ -242,10 +278,10 @@ const VibeCodingSection = () => {
           {vibeProjects.map((project, idx) => (
             <article
               key={project.title}
-              className="group relative overflow-hidden rounded-[28px] border border-border/70 bg-background/65 shadow-[0_18px_60px_-48px_rgba(0,0,0,0.45)] backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-[#22C55E]/35 hover:shadow-[0_28px_70px_-46px_rgba(34,197,94,0.38)] dark:bg-white/[0.025] dark:border-white/[0.08]"
+              className="group relative overflow-hidden rounded-[28px] border border-border/70 bg-background/65 p-3 shadow-[0_18px_60px_-48px_rgba(0,0,0,0.45)] backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-[#22C55E]/35 hover:shadow-[0_28px_70px_-46px_rgba(34,197,94,0.38)] dark:bg-white/[0.025] dark:border-white/[0.08]"
               style={{ transitionDelay: `${idx * 50}ms` }}
             >
-              <div className="grid min-h-[280px] grid-cols-1 md:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
+              <div className="grid min-h-[280px] grid-cols-1 gap-3 md:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
                 <div className="flex flex-col justify-between px-5 py-6 sm:px-8 sm:py-8">
                   <div>
                     <div className="flex items-center gap-3 text-[11px] tracking-[0.24em] text-muted-foreground">

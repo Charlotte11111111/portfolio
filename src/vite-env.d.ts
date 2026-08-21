@@ -1,9 +1,9 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_COZE_API_TOKEN?: string;
-  readonly VITE_COZE_BOT_ID?: string;
-  readonly VITE_COZE_API_BASE_URL?: string;
+  readonly VITE_LLM_API_KEY?: string;
+  readonly VITE_LLM_API_BASE_URL?: string;
+  readonly VITE_LLM_MODEL?: string;
 }
 
 interface ImportMeta {

@@ -1,5 +1,5 @@
-import { type KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
-import { Bot, Send, X } from 'lucide-react';
+import { type KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { Bot, Send } from 'lucide-react';
 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -7,7 +7,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { renderMarkdownLite } from '@/lib/markdownLite';
-import { getBotInitInfo, sendMessageToCoze } from '@/services/cozeService';
+import {
+  getChatInitInfo,
+  isChatConfigured,
+  sendChatMessage,
+  type ChatTurn,
+} from '@/services/chatService';
 
 type ChatRole = 'user' | 'assistant' | 'system';
 
@@ -22,19 +27,6 @@ const createId = () => {
   return `${Date.now()}_${Math.random().toString(16).slice(2)}`;
 };
 
-const getStableUserId = () => {
-  const key = 'coze_user_id';
-  try {
-    const existing = localStorage.getItem(key);
-    if (existing) return existing;
-    const next = `user_${createId()}`;
-    localStorage.setItem(key, next);
-    return next;
-  } catch {
-    return `user_${createId()}`;
-  }
-};
-
 export default function ChatPopover({
   avatarSrc,
   className,
@@ -42,7 +34,6 @@ export default function ChatPopover({
   avatarSrc: string;
   className?: string;
 }) {
-  const userId = useMemo(() => getStableUserId(), []);
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
@@ -59,51 +50,46 @@ export default function ChatPopover({
     if (!open) return;
     if (messages.length > 0) return;
 
-    let cancelled = false;
-    (async () => {
-      const init = await getBotInitInfo();
-      if (cancelled) return;
+    const init = getChatInitInfo();
+    if (!isChatConfigured()) {
+      setMessages([
+        {
+          id: createId(),
+          role: 'system',
+          content:
+            '未检测到对话 API 配置。请在 `.env.local` 或 Vercel 环境变量中设置 `VITE_LLM_API_KEY`（可选 `VITE_LLM_API_BASE_URL`、`VITE_LLM_MODEL`）。',
+        },
+      ]);
+      setSuggested([]);
+      return;
+    }
 
-      const prologue = init?.prologue?.trim();
-      if (prologue) {
-        setMessages([{ id: createId(), role: 'assistant', content: prologue }]);
-      } else if (!import.meta.env.VITE_COZE_API_TOKEN) {
-        setMessages([
-          {
-            id: createId(),
-            role: 'system',
-            content: '未检测到 Coze Agent 配置，请先在 `.env.local` 配置 `VITE_COZE_API_TOKEN`。',
-          },
-        ]);
-      } else {
-        setMessages([
-          {
-            id: createId(),
-            role: 'assistant',
-            content: '你好，欢迎来和我对话。你可以直接问我任何问题。',
-          },
-        ]);
-      }
-
-      setSuggested((init?.suggested_questions || []).filter(Boolean).slice(0, 4));
-    })();
-
-    return () => {
-      cancelled = true;
-    };
+    setMessages([{ id: createId(), role: 'assistant', content: init.prologue }]);
+    setSuggested(init.suggested_questions.slice(0, 4));
   }, [open, messages.length]);
+
+  const toHistory = (list: ChatMessage[]): ChatTurn[] =>
+    list
+      .filter((m) => m.role === 'user' || m.role === 'assistant')
+      .map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content }));
 
   const send = async (text: string) => {
     const trimmed = text.trim();
     if (!trimmed || loading) return;
 
+    const userMessage: ChatMessage = { id: createId(), role: 'user', content: trimmed };
+    const nextMessages = [...messages, userMessage];
+
     setLoading(true);
     setSuggested([]);
-    setMessages((prev) => [...prev, { id: createId(), role: 'user', content: trimmed }]);
+    setMessages(nextMessages);
     setInput('');
 
     try {
-      const reply = await sendMessageToCoze({ input: trimmed, userId });
+      const reply = await sendChatMessage({
+        input: trimmed,
+        history: toHistory(messages),
+      });
       setMessages((prev) => [...prev, { id: createId(), role: 'assistant', content: reply }]);
     } catch {
       setMessages((prev) => [
@@ -171,7 +157,7 @@ export default function ChatPopover({
             </span>
             <div className="leading-tight">
               <div className="text-sm font-medium">跟我对话</div>
-              <div className="text-xs text-muted-foreground">Coze Agent</div>
+              <div className="text-xs text-muted-foreground">简历助手</div>
             </div>
           </div>
         </div>
@@ -181,19 +167,24 @@ export default function ChatPopover({
             {messages.map((m) => (
               <div
                 key={m.id}
-                className={cn('flex',
-                  m.role === 'user' ? 'justify-end' : 'justify-start',
-                )}
+                className={cn('flex', m.role === 'user' ? 'justify-end' : 'justify-start')}
               >
                 <div
                   className={cn(
                     'max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm',
-                    m.role === 'user' && 'bg-[#22C55E] text-white shadow-[0_12px_40px_-28px_rgba(34,197,94,0.9)]',
-                    m.role === 'assistant' && 'bg-secondary/70 text-foreground border border-border/70',
-                    m.role === 'system' && 'bg-destructive/10 text-destructive border border-destructive/20',
+                    m.role === 'user' &&
+                      'bg-[#22C55E] text-white shadow-[0_12px_40px_-28px_rgba(34,197,94,0.9)]',
+                    m.role === 'assistant' &&
+                      'bg-secondary/70 text-foreground border border-border/70',
+                    m.role === 'system' &&
+                      'bg-destructive/10 text-destructive border border-destructive/20',
                   )}
                 >
-                  {m.role === 'assistant' ? renderMarkdownLite(m.content) : <span className="whitespace-pre-wrap leading-relaxed">{m.content}</span>}
+                  {m.role === 'assistant' ? (
+                    renderMarkdownLite(m.content)
+                  ) : (
+                    <span className="whitespace-pre-wrap leading-relaxed">{m.content}</span>
+                  )}
                 </div>
               </div>
             ))}

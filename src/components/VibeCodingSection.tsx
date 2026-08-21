@@ -1,9 +1,18 @@
 import { useEffect, useRef, useState, lazy, Suspense } from 'react';
-import { ArrowUpRight, Sparkles, Github, ExternalLink, ChevronRight } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Github, ChevronRight } from 'lucide-react';
 
 const ParticleButterflyEffect = lazy(() => import('./ParticleButterflyEffect'));
 
-const vibeProjects = [
+type VibeProject = {
+  title: string;
+  description: string;
+  tags: string[];
+  github?: string;
+  demo?: string;
+  featured: boolean;
+};
+
+const vibeProjects: VibeProject[] = [
   {
     title: 'Knowledge Assistant',
     description: 'AI 知识库助手：基于 Skills 与多 Agent 协作，完成知识沉淀、问答与产品工作流编排。',
@@ -25,7 +34,7 @@ const vibeProjects = [
     description: '结构化 Prompt 设计实验，将模糊需求转化为高质量 AI 输出。',
     tags: ['React', 'AI API', '语音识别'],
     github: 'https://github.com/shiyiqing111/Vibe-prompt-assistant',
-    demo: 'https://traevibe-prompt-assistant0ied.vercel.app/',
+    demo: 'https://vibe-prompt-assistant.vercel.app/',
     featured: true,
   },
   {
@@ -33,7 +42,15 @@ const vibeProjects = [
     description: '深度解析岗位要求，定制化生成模拟面试题与策略，帮助复盘。',
     tags: ['React', 'AI', '面试助手'],
     github: 'https://github.com/shiyiqing111/MockAI',
-    demo: 'https://traes7131vdn.vercel.app/',
+    demo: 'https://mock-ai-xi.vercel.app/',
+    featured: true,
+  },
+  {
+    title: 'Energy Ring',
+    description:
+      'Web prototype for the Energy Ring: AR try-on, camera-based finger measurement, and screen sizer. Live: https://srv1560692.hstgr.cloud · http://187.127.102.10:8802',
+    tags: ['AR Try-on', 'Camera', 'Web Prototype'],
+    demo: 'https://srv1560692.hstgr.cloud',
     featured: true,
   },
   {
@@ -196,15 +213,17 @@ const VibeCodingSection = () => {
                       <span>在线体验</span>
                     </a>
                   )}
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 dark:bg-white/[0.05] dark:border-white/[0.08] px-4 py-2 text-sm text-foreground hover:bg-[#22C55E]/10 hover:border-[#22C55E]/30 transition-all duration-200"
-                  >
-                    <Github className="w-4 h-4" />
-                    <span>GitHub</span>
-                  </a>
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 dark:bg-white/[0.05] dark:border-white/[0.08] px-4 py-2 text-sm text-foreground hover:bg-[#22C55E]/10 hover:border-[#22C55E]/30 transition-all duration-200"
+                    >
+                      <Github className="w-4 h-4" />
+                      <span>GitHub</span>
+                    </a>
+                  )}
                 </div>
               </div>
             </a>
@@ -270,15 +289,17 @@ const VibeCodingSection = () => {
                       <span>在线体验</span>
                     </a>
                   )}
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 dark:bg-white/[0.05] dark:border-white/[0.08] px-4 py-2 text-sm text-foreground hover:bg-[#22C55E]/10 hover:border-[#22C55E]/30 transition-all duration-200"
-                  >
-                    <Github className="w-4 h-4" />
-                    <span>GitHub</span>
-                  </a>
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 dark:bg-white/[0.05] dark:border-white/[0.08] px-4 py-2 text-sm text-foreground hover:bg-[#22C55E]/10 hover:border-[#22C55E]/30 transition-all duration-200"
+                    >
+                      <Github className="w-4 h-4" />
+                      <span>GitHub</span>
+                    </a>
+                  )}
                 </div>
               </div>
             </a>

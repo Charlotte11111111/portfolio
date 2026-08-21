@@ -12,6 +12,14 @@ export default defineConfig(({ mode }) => {
       hmr: {
         overlay: false,
       },
+      // 本地开发绕过浏览器 CORS：前端可把 VITE_LLM_API_BASE_URL 设为 /llm-api
+      proxy: {
+        "/llm-api": {
+          target: "https://api.gotoken.top",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/llm-api/, ""),
+        },
+      },
     },
     plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
     resolve: {

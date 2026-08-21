@@ -57,7 +57,7 @@ export default function ChatPopover({
           id: createId(),
           role: 'system',
           content:
-            '未检测到对话 API 配置。请在 `.env.local` 或 Vercel 环境变量中设置 `VITE_LLM_API_KEY`（可选 `VITE_LLM_API_BASE_URL`、`VITE_LLM_MODEL`）。',
+            '未检测到对话 API 配置。请在 `.env.local` 或 Vercel 设置 `VITE_LLM_API_KEY`（对应 Claude Code 的 ANTHROPIC_AUTH_TOKEN），以及 `VITE_LLM_API_BASE_URL`、`VITE_LLM_MODEL`。',
         },
       ]);
       setSuggested([]);

@@ -1,9 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_LLM_API_KEY?: string;
-  readonly VITE_LLM_API_BASE_URL?: string;
-  readonly VITE_LLM_MODEL?: string;
+  // 对话密钥已改为服务端 LLM_*，前端不再需要 VITE_LLM_*
 }
 
 interface ImportMeta {

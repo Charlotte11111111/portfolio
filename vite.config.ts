@@ -1,10 +1,67 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv, type Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
+import { callLlmChat, resolveLlmEnv, type ChatTurn } from "./server/llmChat";
+
+function localChatApiPlugin(env: Record<string, string>): Plugin {
+  return {
+    name: "local-chat-api",
+    configureServer(server) {
+      server.middlewares.use(async (req, res, next) => {
+        const url = req.url?.split("?")[0];
+        if (url !== "/api/chat" || req.method !== "POST") {
+          next();
+          return;
+        }
+
+        try {
+          const chunks: Buffer[] = [];
+          for await (const chunk of req) {
+            chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+          }
+          const raw = Buffer.concat(chunks).toString("utf8");
+          const body = raw ? JSON.parse(raw) : {};
+          const input = typeof body.input === "string" ? body.input.trim() : "";
+          if (!input) {
+            res.statusCode = 400;
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify({ error: "input 不能为空" }));
+            return;
+          }
+
+          const { apiKey, baseUrl, model } = resolveLlmEnv(env);
+          const result = await callLlmChat({
+            input,
+            history: Array.isArray(body.history) ? (body.history as ChatTurn[]) : [],
+            apiKey,
+            baseUrl,
+            model,
+          });
+
+          res.statusCode = result.ok ? 200 : result.status;
+          res.setHeader("Content-Type", "application/json");
+          res.end(
+            JSON.stringify(result.ok ? { reply: result.text } : { error: result.error }),
+          );
+        } catch (error) {
+          res.statusCode = 500;
+          res.setHeader("Content-Type", "application/json");
+          res.end(
+            JSON.stringify({
+              error: error instanceof Error ? error.message : "本地 /api/chat 失败",
+            }),
+          );
+        }
+      });
+    },
+  };
+}
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+
   return {
     server: {
       host: "::",
@@ -12,16 +69,12 @@ export default defineConfig(({ mode }) => {
       hmr: {
         overlay: false,
       },
-      // 本地开发绕过浏览器 CORS：前端可把 VITE_LLM_API_BASE_URL 设为 /llm-api
-      proxy: {
-        "/llm-api": {
-          target: "https://api.gotoken.top",
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/llm-api/, ""),
-        },
-      },
     },
-    plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+    plugins: [
+      react(),
+      mode === "development" && componentTagger(),
+      mode === "development" && localChatApiPlugin(env),
+    ].filter(Boolean),
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),

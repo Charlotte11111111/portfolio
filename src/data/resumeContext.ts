@@ -15,9 +15,9 @@ export const RESUME_CONTEXT = `
 - 北师香港浸会大学｜数据科学与大数据技术学士｜2020.09 – 2024.06｜一等学位，成绩排名年级前 10%，连续四年二等奖学金，CET-6
 
 # 技能专长
-- 产品能力：用户研究、需求分析、数据埋点分析、竞品分析、PRD、原型设计、产品规划、运营策略、A/B 测试、PLG 策略研究
-- 数据分析：Python、SQL、C、R、Excel、Tableau、数据可视化
-- AI 创新实践：Vibe Coding，用大模型辅助需求拆解、Prompt 设计与原型生成
+- 产品能力：用户研究、机会洞察、需求分析、竞品分析、PRD、原型 Demo 设计、A/B 测试、数据埋点等
+- 数据分析：Python、SQL、C 语言、R、Excel、Tableau、数据可视化等
+- AI 能力：大模型应用、Prompt 工程、Agent / RAG、AI 原型验证、模型能力边界评估、AIGC 场景落地、工作流搭建等
 
 # 工作经历
 ## VeSync（晨北科技）｜产品经理（智能穿戴品类）｜2026.03 – 至今
@@ -45,6 +45,14 @@ export const RESUME_CONTEXT = `
 - 共青团行政委员（2020–2023）：协助 10+ 场团会
 
 # 代表性项目
+- AI 指围识别工具（实习项目，2026.03–2026.07）：主导 AI 拍照识别工具从 0 到 1，搭建 AR 虚拟试戴、摄像头 AI 指围测量、屏幕标尺校准三大功能，替代线下试戴套件
+  - 搭建 ROI 与敏感性分析模型，完成百人手部采样和用户调研，划定精度目标及识别准确率盈亏阈值
+  - 提出「AI 识别 + 用户手动微调」方案，识别准确率提升 15%；独立完成三大模块 PRD 与原型
+  - 优化算法链路和推理速度，实现端侧实时检测；补充水平仪、异常兜底、自动角点校准并交付 MVP
+- AI 产品工具（Vibe Coding，2025–至今）：围绕工作效率打造 Skill 工作流、Agent、Prompt、浏览器插件与知识库
+  - 个人知识库与知识图谱：打通 Electron / React、FastAPI、向量库与 Agent，实现知识入库、RAG 问答和图谱查询
+  - AI 产品工作流：以 Skill 将模糊想法拆为脑暴、PRD、评审、实验等产品链路
+  - 秋招助手：简历填写插件与 MockAI 覆盖招聘网站自动填表、简历 / JD 匹配、公司业务研究、定制面试题及薄弱点突击
 - 智能学习设备租赁平台（2023）：调研 300+ 中学生与家长，完成 0–1 商业模型
 - Yelp 用户评论行为分析（2021）：聚类与主题分析，第一作者发文
 - Vibe Coding：Knowledge Assistant、Product Skills Studio、Vibe Prompt Assistant、MockAI、Energy Ring（AR 试戴/指维测量）、Resume Autofill、Linguist Translator 等

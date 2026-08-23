@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import {
   ArrowUpRight,
+  ChevronLeft,
   ChevronRight,
   Github,
   Sparkles,
+  ZoomIn,
 } from 'lucide-react';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 
 const ParticleButterflyEffect = lazy(() => import('./ParticleButterflyEffect'));
 
@@ -127,63 +130,124 @@ const visualLabelMap = {
 const ProjectVisual = ({ project }: { project: VibeProject }) => {
   const [eyebrow, label] = visualLabelMap[project.visual];
   const count = project.screenshots.length;
+  const [activeImage, setActiveImage] = useState<number | null>(null);
+
+  const showPrevious = () => {
+    setActiveImage((current) =>
+      current === null ? 0 : (current - 1 + count) % count,
+    );
+  };
+
+  const showNext = () => {
+    setActiveImage((current) =>
+      current === null ? 0 : (current + 1) % count,
+    );
+  };
 
   return (
-    <div className="group/stack relative h-full min-h-[280px] overflow-hidden rounded-[22px] bg-secondary/35 text-foreground dark:bg-white/[0.035]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(34,197,94,0.10),transparent_46%)]" />
-      <div className="absolute left-4 top-4 z-40 rounded-full border border-border/70 bg-background/80 px-3 py-1.5 text-[9px] tracking-[0.24em] text-muted-foreground shadow-sm backdrop-blur-md">
-        {eyebrow}
-      </div>
-      {count > 1 && (
-        <div className="absolute right-4 top-4 z-40 rounded-full border border-border/70 bg-background/80 px-3 py-1.5 text-[10px] text-muted-foreground shadow-sm backdrop-blur-md">
-          悬浮展开 · {count} 张
+    <Dialog open={activeImage !== null} onOpenChange={(open) => !open && setActiveImage(null)}>
+      <div className="group/stack relative h-full min-h-[280px] overflow-hidden rounded-[22px] bg-secondary/35 text-foreground dark:bg-white/[0.035]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(34,197,94,0.10),transparent_46%)]" />
+        <div className="absolute left-4 top-4 z-40 rounded-full border border-border/70 bg-background/80 px-3 py-1.5 text-[9px] tracking-[0.24em] text-muted-foreground shadow-sm backdrop-blur-md">
+          {eyebrow}
         </div>
-      )}
+        {count > 1 && (
+          <div className="absolute right-4 top-4 z-40 rounded-full border border-border/70 bg-background/80 px-3 py-1.5 text-[10px] text-muted-foreground shadow-sm backdrop-blur-md">
+            悬浮展开 · {count} 张
+          </div>
+        )}
 
-      <div className="absolute inset-2 flex items-center justify-center pt-5">
-        <div className="relative h-[90%] w-full">
-          {project.screenshots.map((src, index) => {
-            const defaultX = (index - (count - 1) / 2) * 5;
-            const spreadX = count === 1 ? 0 : (index - (count - 1) / 2) * 25;
-            const rotation = (index - (count - 1) / 2) * 3;
-            return (
-              <div
-                key={src}
-                className="absolute left-[6%] top-1/2 h-full w-[88%] -translate-y-1/2 cursor-zoom-in overflow-hidden rounded-xl border border-border/70 bg-background shadow-[0_15px_35px_rgba(0,0,0,0.22)] transition-all duration-500 ease-out [transform:translateX(var(--stack-x))_translateY(-50%)_rotate(var(--stack-r))] group-hover/stack:[transform:translateX(var(--spread-x))_translateY(-50%)_rotate(0deg)] hover:!z-50 hover:![transform:translateX(var(--spread-x))_translateY(-50%)_rotate(0deg)_scale(1.08)]"
-                style={{
-                  zIndex: index + 1,
-                  '--stack-x': `${defaultX}%`,
-                  '--spread-x': `${spreadX}%`,
-                  '--stack-r': `${rotation}deg`,
-                } as React.CSSProperties}
-              >
-                <img
-                  src={src}
-                  alt={`${project.title} 项目截图 ${index + 1}`}
-                  className="h-full w-full object-cover object-top"
-                  loading="lazy"
-                />
-                <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-black/5" />
-              </div>
-            );
-          })}
-          <div className="pointer-events-none absolute -bottom-3 left-1/2 h-5 w-4/5 -translate-x-1/2 rounded-full bg-black/20 blur-xl" />
+        <div className="absolute inset-2 flex items-center justify-center pt-5">
+          <div className="relative h-[90%] w-full">
+            {project.screenshots.map((src, index) => {
+              const defaultX = (index - (count - 1) / 2) * 5;
+              const spreadX = count === 1 ? 0 : (index - (count - 1) / 2) * 25;
+              const rotation = (index - (count - 1) / 2) * 3;
+              return (
+                <button
+                  key={src}
+                  type="button"
+                  onClick={() => setActiveImage(index)}
+                  aria-label={`放大查看 ${project.title} 项目截图 ${index + 1}`}
+                  className="group/image absolute left-[6%] top-1/2 h-full w-[88%] -translate-y-1/2 cursor-zoom-in overflow-hidden rounded-xl border border-border/70 bg-background p-0 shadow-[0_15px_35px_rgba(0,0,0,0.22)] transition-all duration-500 ease-out [transform:translateX(var(--stack-x))_translateY(-50%)_rotate(var(--stack-r))] group-hover/stack:[transform:translateX(var(--spread-x))_translateY(-50%)_rotate(0deg)] hover:!z-50 hover:![transform:translateX(var(--spread-x))_translateY(-50%)_rotate(0deg)_scale(1.08)] focus-visible:!z-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22C55E]"
+                  style={{
+                    zIndex: index + 1,
+                    '--stack-x': `${defaultX}%`,
+                    '--spread-x': `${spreadX}%`,
+                    '--stack-r': `${rotation}deg`,
+                  } as React.CSSProperties}
+                >
+                  <img
+                    src={src}
+                    alt={`${project.title} 项目截图 ${index + 1}`}
+                    className="h-full w-full object-cover object-top"
+                    loading="lazy"
+                  />
+                  <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover/image:bg-black/15">
+                    <span className="flex h-10 w-10 scale-75 items-center justify-center rounded-full bg-black/65 text-white opacity-0 shadow-lg backdrop-blur transition-all group-hover/image:scale-100 group-hover/image:opacity-100">
+                      <ZoomIn className="h-5 w-5" />
+                    </span>
+                  </span>
+                  <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-black/5" />
+                </button>
+              );
+            })}
+            <div className="pointer-events-none absolute -bottom-3 left-1/2 h-5 w-4/5 -translate-x-1/2 rounded-full bg-black/20 blur-xl" />
+          </div>
+        </div>
+
+        <div className="absolute bottom-3 left-4 z-40 flex items-center gap-2 rounded-full bg-background/80 px-3 py-1.5 text-[10px] font-medium tracking-wide text-muted-foreground shadow-sm backdrop-blur-md">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#22C55E] shadow-[0_0_8px_#22C55E]" />
+          {label}
+        </div>
+        <div className="absolute bottom-5 right-5 z-40 flex gap-1">
+          {project.screenshots.map((_, index) => (
+            <span
+              key={index}
+              className={`h-1 rounded-full ${index === 0 ? 'w-5 bg-[#22C55E]' : 'w-2 bg-foreground/20'}`}
+            />
+          ))}
         </div>
       </div>
 
-      <div className="absolute bottom-3 left-4 z-40 flex items-center gap-2 rounded-full bg-background/80 px-3 py-1.5 text-[10px] font-medium tracking-wide text-muted-foreground shadow-sm backdrop-blur-md">
-        <span className="h-1.5 w-1.5 rounded-full bg-[#22C55E] shadow-[0_0_8px_#22C55E]" />
-        {label}
-      </div>
-      <div className="absolute bottom-5 right-5 z-40 flex gap-1">
-        {project.screenshots.map((_, index) => (
-          <span
-            key={index}
-            className={`h-1 rounded-full ${index === 0 ? 'w-5 bg-[#22C55E]' : 'w-2 bg-foreground/20'}`}
-          />
-        ))}
-      </div>
-    </div>
+      <DialogContent className="h-auto w-[94vw] max-w-[1400px] border-white/10 bg-black/95 p-3 text-white shadow-2xl sm:rounded-2xl">
+        <DialogTitle className="sr-only">
+          {project.title} 项目截图
+        </DialogTitle>
+        {activeImage !== null && (
+          <div className="relative flex max-h-[88vh] min-h-[50vh] items-center justify-center overflow-hidden rounded-xl">
+            <img
+              src={project.screenshots[activeImage]}
+              alt={`${project.title} 项目截图 ${activeImage + 1}`}
+              className="max-h-[86vh] max-w-full object-contain"
+            />
+            {count > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={showPrevious}
+                  aria-label="查看上一张截图"
+                  className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/65 text-white backdrop-blur transition hover:bg-[#22C55E]"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
+                <button
+                  type="button"
+                  onClick={showNext}
+                  aria-label="查看下一张截图"
+                  className="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/65 text-white backdrop-blur transition hover:bg-[#22C55E]"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </button>
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/70 px-3 py-1.5 text-xs text-white/80 backdrop-blur">
+                  {activeImage + 1} / {count}
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 };
 

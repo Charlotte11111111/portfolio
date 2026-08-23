@@ -4,17 +4,17 @@ const skillGroups = [
   {
     number: '01',
     title: '产品能力',
-    description: '用户研究、需求分析、数据埋点分析、竞品分析、PRD 撰写，原型设计、产品规划、运营策略、A/B 测试、PLG 策略研究',
+    description: '用户研究、机会洞察、需求分析、竞品分析、PRD、原型 Demo 设计、A/B 测试、数据埋点等',
   },
   {
     number: '02',
     title: '数据分析',
-    description: 'Python、SQL、C 语言、R、Excel、Tableau、数据可视化',
+    description: 'Python、SQL、C 语言、R、Excel、Tableau、数据可视化等',
   },
   {
     number: '03',
-    title: 'AI 创新实践',
-    description: '探索 Vibe Coding 开发模式，利用大模型辅助完成需求拆解、Prompt 设计与原型生成，提升产品原型与功能验证效率。',
+    title: 'AI 能力',
+    description: '大模型应用、Prompt 工程、Agent / RAG、AI 原型验证、模型能力边界评估、AIGC 场景落地、工作流搭建等',
   },
 ];
 

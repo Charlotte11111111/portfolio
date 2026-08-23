@@ -154,8 +154,8 @@ const WorkSection = () => {
     return () => window.removeEventListener('wheel', onWheel);
   }, [activeIndex, scrollToIndex]);
 
-  const toggleExpand = (key: string) => {
-    setExpandedItems((prev) => ({ ...prev, [key]: !prev[key] }));
+  const setExpanded = (key: string, expanded: boolean) => {
+    setExpandedItems((prev) => ({ ...prev, [key]: expanded }));
   };
 
   const segmentSize = 1 / experiences.length;
@@ -243,8 +243,18 @@ const WorkSection = () => {
                         const key = `${i}-${hi}`;
                         const isExpanded = expandedItems[key];
                         return (
-                          <div key={hi} className="group/item rounded-xl border border-border bg-background/50 overflow-hidden transition-all duration-300 hover:border-foreground/20 dark:bg-white/[0.03] dark:border-white/[0.06] dark:hover:border-white/15">
-                            <button onClick={() => toggleExpand(key)} className="w-full flex items-center justify-between px-5 py-4 text-left">
+                          <div
+                            key={hi}
+                            onMouseEnter={() => setExpanded(key, true)}
+                            onFocusCapture={() => setExpanded(key, true)}
+                            className="group/item rounded-xl border border-border bg-background/50 overflow-hidden transition-all duration-300 hover:border-foreground/20 dark:bg-white/[0.03] dark:border-white/[0.06] dark:hover:border-white/15"
+                          >
+                            <button
+                              type="button"
+                              onClick={() => setExpanded(key, true)}
+                              aria-expanded={Boolean(isExpanded)}
+                              className="w-full flex items-center justify-between px-5 py-4 text-left"
+                            >
                               <div className="flex items-center gap-3">
                                 <span className="w-6 h-6 rounded-full bg-foreground/5 dark:bg-white/10 flex items-center justify-center text-xs text-muted-foreground font-medium shrink-0">{hi + 1}</span>
                                 <span className="text-sm text-foreground font-medium">{h.title}</span>

@@ -1,7 +1,40 @@
 import { useRef, useEffect, useState } from 'react';
 import { Download } from 'lucide-react';
 
-const projects = [
+type Project = {
+  title: string;
+  subtitle: string;
+  period: string;
+  description: string;
+  highlights?: string[];
+  pdf?: string;
+};
+
+const projects: Project[] = [
+  {
+    title: 'AI 指围识别工具',
+    subtitle: '实习项目 · 智能穿戴',
+    period: '2026.03 – 2026.07',
+    description:
+      '主导 AI 拍照识别工具从 0 到 1 落地，搭建 AR 虚拟试戴、摄像头 AI 指围测量、屏幕标尺校准三大核心功能，替代线下实体试戴套件。',
+    highlights: [
+      '搭建利润测算模型开展 ROI 与敏感性分析，测算识别准确率盈亏阈值；完成百人手部采样与用户调研，划定测量精度目标，为项目立项提供量化依据。',
+      '协同算法对比两套识别方案，创新「AI 识别 + 用户手动微调」人机协同方案，识别准确率提升 15%；独立完成三大模块 PRD 与原型，联动多团队推进开发、测试与合规校验。',
+      '基于数据定位手指识别精度差异，拆解算法链路并优化推理速度，实现端侧模型实时检测；补充水平仪、异常兜底与自动角点校准能力，交付完整 MVP。',
+    ],
+  },
+  {
+    title: 'AI 产品工具',
+    subtitle: 'Vibe Coding · 个人项目',
+    period: '2025 – 至今',
+    description:
+      '围绕工作效率打造 AI 应用，覆盖 Skill 工作流、Agent、Prompt 调优、浏览器插件与知识库，实现结构化输出、RAG 检索、Agent 搭建及前后端服务打通。',
+    highlights: [
+      '个人知识库与知识图谱：打通 Electron / React、FastAPI、向量库与 Agent，完成知识入库、RAG 问答及图谱查询闭环。',
+      'AI 产品工作流：编排个人积累的 Skill，将模糊想法拆解为脑暴、PRD、评审、实验等可执行产品链路，侧重 Prompt 结构化与多步骤工作流设计。',
+      '秋招助手：简历填写插件自动匹配招聘网站表单字段；MockAI 基于简历与 JD 进行匹配分析、公司业务研究、定制面试题生成与薄弱点突击，覆盖「投递—备面」闭环。',
+    ],
+  },
   {
     title: '智能学习设备租赁平台',
     subtitle: '产品调研与方案设计',
@@ -99,11 +132,9 @@ const AboutSection = () => {
           >
             <p className="text-sm text-muted-foreground mb-4 tracking-widest">项目经历</p>
             {projects.map((project) => (
-              <a
+              <article
                 key={project.title}
-                href={project.pdf}
-                download
-                className="group block rounded-2xl border border-border p-8 hover:bg-secondary/50 transition-colors duration-300"
+                className="group rounded-2xl border border-border p-8 hover:bg-secondary/50 transition-colors duration-300"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div>
@@ -112,13 +143,32 @@ const AboutSection = () => {
                   </div>
                   <div className="flex items-center gap-3 shrink-0">
                     <span className="text-sm text-muted-foreground">{project.period}</span>
-                    <span className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground transition-colors group-hover:text-foreground group-hover:border-foreground/20">
-                      <Download className="w-4 h-4" />
-                    </span>
+                    {project.pdf && (
+                      <a
+                        href={project.pdf}
+                        download
+                        aria-label={`下载 ${project.title} 项目文件`}
+                        className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground transition-colors group-hover:text-foreground group-hover:border-foreground/20"
+                      >
+                        <Download className="w-4 h-4" />
+                      </a>
+                    )}
                   </div>
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed">{project.description}</p>
-              </a>
+                {project.highlights && (
+                  <ul className="mt-5 space-y-3 border-t border-border/70 pt-5">
+                    {project.highlights.map((highlight, index) => (
+                      <li key={highlight} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
+                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/10 text-[10px] font-medium text-[#22C55E]">
+                          {index + 1}
+                        </span>
+                        <span>{highlight}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </article>
             ))}
           </div>
         </div>

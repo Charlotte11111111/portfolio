@@ -24,38 +24,39 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const apiKey = process.env.RESEND_API_KEY?.trim();
-  if (!apiKey) {
-    return res.status(500).json({ error: '服务端尚未配置 RESEND_API_KEY。' });
-  }
-
-  let body: FeedbackBody = {};
   try {
-    body = (typeof req.body === 'string' ? JSON.parse(req.body) : req.body || {}) as FeedbackBody;
-  } catch {
-    return res.status(400).json({ error: '无效的 JSON。' });
-  }
+    const apiKey = process.env.RESEND_API_KEY?.trim();
+    if (!apiKey) {
+      return res.status(500).json({ error: '服务端尚未配置 RESEND_API_KEY。' });
+    }
 
-  const rating = Number(body.rating);
-  const suggestion = typeof body.suggestion === 'string' ? body.suggestion.trim() : '';
+    let body: FeedbackBody = {};
+    try {
+      body = (typeof req.body === 'string' ? JSON.parse(req.body) : req.body || {}) as FeedbackBody;
+    } catch {
+      return res.status(400).json({ error: '无效的 JSON。' });
+    }
 
-  if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
-    return res.status(400).json({ error: '评分必须为 1–5 星。' });
-  }
-  if (suggestion.length > 2000) {
-    return res.status(400).json({ error: '反馈内容不能超过 2000 字。' });
-  }
+    const rating = Number(body.rating);
+    const suggestion = typeof body.suggestion === 'string' ? body.suggestion.trim() : '';
 
-  const to = process.env.FEEDBACK_TO_EMAIL?.trim() || 'shiyiqing111@gmail.com';
-  const from =
-    process.env.FEEDBACK_FROM_EMAIL?.trim() ||
-    'Portfolio Feedback <onboarding@resend.dev>';
-  const safeSuggestion = escapeHtml(suggestion || '访客没有填写文字建议。');
-  const submittedAt = new Date().toLocaleString('zh-CN', {
-    timeZone: 'Asia/Shanghai',
-  });
+    if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+      return res.status(400).json({ error: '评分必须为 1–5 星。' });
+    }
+    if (suggestion.length > 2000) {
+      return res.status(400).json({ error: '反馈内容不能超过 2000 字。' });
+    }
 
-  const resendResponse = await fetch('https://api.resend.com/emails', {
+    const to = process.env.FEEDBACK_TO_EMAIL?.trim() || 'shiyiqing111@gmail.com';
+    const from =
+      process.env.FEEDBACK_FROM_EMAIL?.trim() ||
+      'Portfolio Feedback <onboarding@resend.dev>';
+    const safeSuggestion = escapeHtml(suggestion || '访客没有填写文字建议。');
+    const submittedAt = new Date().toLocaleString('zh-CN', {
+      timeZone: 'Asia/Shanghai',
+    });
+
+    const resendResponse = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${apiKey}`,
@@ -84,15 +85,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }),
   });
 
-  const result = (await resendResponse.json().catch(() => null)) as
-    | { id?: string; message?: string }
-    | null;
+    const result = (await resendResponse.json().catch(() => null)) as
+      | { id?: string; message?: string }
+      | null;
 
-  if (!resendResponse.ok) {
-    return res.status(502).json({
-      error: result?.message || `邮件发送失败（HTTP ${resendResponse.status}）。`,
+    if (!resendResponse.ok) {
+      return res.status(502).json({
+        error: result?.message || `邮件发送失败（HTTP ${resendResponse.status}）。`,
+      });
+    }
+
+    return res.status(200).json({ ok: true, id: result?.id });
+  } catch (error) {
+    console.error('Feedback email failed:', error);
+    return res.status(500).json({
+      error:
+        error instanceof Error
+          ? `邮件服务调用异常：${error.message}`
+          : '邮件服务调用异常，请查看 Vercel Function Logs。',
     });
   }
-
-  return res.status(200).json({ ok: true, id: result?.id });
 }

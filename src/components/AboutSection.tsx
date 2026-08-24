@@ -51,6 +51,36 @@ const projects: Project[] = [
   },
 ];
 
+const campusExperiences = [
+  {
+    title: '团委会 · 行政委员',
+    period: '2020 – 2023',
+    description:
+      '负责团委会日常行政运转与事务统筹，保障组织会议、活动执行、材料流转和跨部门协同，是团委工作落地的中枢角色。',
+    responsibilities: [
+      '统筹团委会日常行政事务，包括会议组织、纪要整理、通知下发、材料归档与进度跟进。',
+      '对接学院、团委各部门及班级团支部，协调活动场地、人员、物资与时间安排。',
+      '参与团学活动全流程支持，覆盖前期筹备、现场执行、物资管理与会后复盘。',
+      '维护团委制度与流程规范，跟进待办事项，减少跨部门沟通遗漏与执行偏差。',
+      '协助完成团员教育、评优推优、志愿服务等常规团务的组织与材料汇总。',
+    ],
+  },
+  {
+    title: '学生会 · 策划部部长',
+    period: '2021 – 2024',
+    description:
+      '负责学生会大型活动与品牌项目的策划与落地，主导活动主题、流程设计、资源协调与跨部门推进，对活动效果与执行质量负责。',
+    responsibilities: [
+      '主导迎新、晚会、比赛、主题周等大型活动方案策划，完成主题定位、流程设计、预算与排期。',
+      '拆解活动目标与执行路径，输出活动策划案和执行手册，明确分工、节点与验收标准。',
+      '协调宣传、外联、文艺、后勤等部门，推动物料、场地、嘉宾与志愿者等资源到位。',
+      '跟进彩排与现场执行，及时处理突发问题，保障活动按时、按质完成。',
+      '活动后复盘到场、反馈与改进点，沉淀可复用的策划模板与执行经验。',
+      '带领策划部成员完成选题、方案评审与项目推进，提升团队产出效率与方案质量。',
+    ],
+  },
+];
+
 const AboutSection = () => {
   const [visible, setVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -86,55 +116,21 @@ const AboutSection = () => {
       </div>
 
       <div className="max-w-7xl mx-auto relative">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-          {/* Left — Paper & Campus */}
-          <div
-            className={`transition-all duration-1000 ${
-              visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-            }`}
-          >
-            <p className="text-sm text-muted-foreground mb-4 tracking-widest">学术与校园</p>
-            <h2 className="font-display text-3xl sm:text-5xl text-foreground font-semibold mb-10" style={{ lineHeight: 1.2 }}>
-              探索与实践
-            </h2>
-
-            <div className="rounded-2xl bg-secondary p-8 mb-8">
-              <p className="text-sm text-muted-foreground mb-2 tracking-widest">论文发表</p>
-              <p className="text-foreground text-sm leading-relaxed font-medium">
-                第一作者 —{" "}
-                <a href="https://arxiv.org/abs/2307.10826" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">
-                  "Yelp Reviews and Food Types: A Comparative Analysis of Ratings, Sentiments, and Topics."
-                </a>
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              <div>
-                <h4 className="font-display text-xl text-foreground font-semibold mb-2">学生会 · 策划部部长</h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  2021–2024｜负责院级大型活动策划与落地，累计组织 10+ 场活动
-                </p>
-              </div>
-              <div>
-                <h4 className="font-display text-xl text-foreground font-semibold mb-2">共青团 · 行政委员</h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  2020–2023｜协助筹备校级与院级团会 10+ 场，独立完成会议纪要与信息管理
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Right — Projects */}
-          <div
-            className={`space-y-8 transition-all duration-1000 delay-300 ${
-              visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-            }`}
-          >
-            <p className="text-sm text-muted-foreground mb-4 tracking-widest">项目经历</p>
+        {/* Projects — standalone first section */}
+        <div
+          className={`transition-all duration-1000 ${
+            visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+          }`}
+        >
+          <p className="mb-4 text-sm tracking-widest text-muted-foreground">项目经历</p>
+          <h2 className="mb-10 font-display text-3xl font-semibold text-foreground sm:text-5xl" style={{ lineHeight: 1.2 }}>
+            从想法到落地
+          </h2>
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {projects.map((project) => (
               <article
                 key={project.title}
-                className="group rounded-2xl border border-border p-8 hover:bg-secondary/50 transition-colors duration-300"
+                className="group rounded-2xl border border-border bg-background/45 p-8 transition-colors duration-300 hover:bg-secondary/50 dark:bg-white/[0.025]"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div>
@@ -168,6 +164,63 @@ const AboutSection = () => {
                     ))}
                   </ul>
                 )}
+              </article>
+            ))}
+          </div>
+        </div>
+
+        {/* Academic & campus — separate section after projects */}
+        <div
+          className={`mt-28 border-t border-border pt-24 transition-all duration-1000 delay-300 ${
+            visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+          }`}
+        >
+          <p className="mb-4 text-sm tracking-widest text-muted-foreground">学术与校园</p>
+          <h2 className="mb-10 font-display text-3xl font-semibold text-foreground sm:text-5xl" style={{ lineHeight: 1.2 }}>
+            探索与实践
+          </h2>
+
+          <div className="rounded-2xl bg-secondary p-8 mb-8">
+            <p className="text-sm text-muted-foreground mb-2 tracking-widest">论文发表</p>
+            <p className="text-foreground text-sm leading-relaxed font-medium">
+              第一作者 —{' '}
+              <a href="https://arxiv.org/abs/2307.10826" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">
+                "Yelp Reviews and Food Types: A Comparative Analysis of Ratings, Sentiments, and Topics."
+              </a>
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {campusExperiences.map((experience, experienceIndex) => (
+              <article
+                key={experience.title}
+                className="rounded-2xl border border-border bg-background/50 p-6 transition-colors duration-300 hover:bg-secondary/50 dark:bg-white/[0.025]"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-xs tracking-[0.2em] text-[#22C55E]">
+                      CAMPUS {String(experienceIndex + 1).padStart(2, '0')}
+                    </p>
+                    <h4 className="mt-2 font-display text-xl font-semibold text-foreground">
+                      {experience.title}
+                    </h4>
+                  </div>
+                  <span className="shrink-0 text-xs text-muted-foreground">{experience.period}</span>
+                </div>
+                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                  {experience.description}
+                </p>
+                <div className="mt-5 border-t border-border/70 pt-5">
+                  <p className="mb-3 text-xs font-medium tracking-widest text-foreground/70">主要工作</p>
+                  <ul className="space-y-3">
+                    {experience.responsibilities.map((responsibility) => (
+                      <li key={responsibility} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#22C55E]" />
+                        <span>{responsibility}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </article>
             ))}
           </div>

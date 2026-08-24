@@ -33,7 +33,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     model,
   });
 
-  if (!result.ok) {
+  if ('error' in result) {
     return res.status(result.status).json({ error: result.error });
   }
 

@@ -44,15 +44,33 @@ const CandySupport = () => {
   const [submitted, setSubmitted] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (rating === 0) return;
     setSending(true);
-    // Simulate async submission (ui-ux-pro-max: show loading feedback)
-    setTimeout(() => {
-      setSending(false);
+    setSubmitError('');
+
+    try {
+      const response = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rating, suggestion }),
+      });
+      const data = (await response.json().catch(() => null)) as
+        | { error?: string }
+        | null;
+
+      if (!response.ok) {
+        throw new Error(data?.error || `提交失败（HTTP ${response.status}）`);
+      }
+
       setSubmitted(true);
-    }, 600);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : '提交失败，请稍后重试。');
+    } finally {
+      setSending(false);
+    }
   };
 
   const handleClose = () => {
@@ -63,6 +81,7 @@ const CandySupport = () => {
       setSuggestion('');
       setSubmitted(false);
       setShowQR(false);
+      setSubmitError('');
     }, 300);
   };
 
@@ -161,6 +180,11 @@ const CandySupport = () => {
                       </>
                     )}
                   </button>
+                  {submitError && (
+                    <p role="alert" className="text-center text-xs leading-relaxed text-destructive">
+                      {submitError}
+                    </p>
+                  )}
                 </>
               ) : (
                 <>

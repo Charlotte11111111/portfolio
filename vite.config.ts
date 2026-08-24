@@ -39,10 +39,12 @@ function localChatApiPlugin(env: Record<string, string>): Plugin {
             model,
           });
 
-          res.statusCode = result.ok ? 200 : result.status;
+          res.statusCode = 'error' in result ? result.status : 200;
           res.setHeader("Content-Type", "application/json");
           res.end(
-            JSON.stringify(result.ok ? { reply: result.text } : { error: result.error }),
+            JSON.stringify(
+              'error' in result ? { error: result.error } : { reply: result.text },
+            ),
           );
         } catch (error) {
           res.statusCode = 500;
